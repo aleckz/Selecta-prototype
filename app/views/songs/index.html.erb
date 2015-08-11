@@ -5,11 +5,11 @@
   <input type="text" ng-model="slctaController.searchTerm">
   <button ng-click="slctaController.doSearch()">Search</button>
 </form>
-</div>
-
-<ul>
-  <li id="results">
+<ul ng-repeat="song in slctaController.songs">
+  <li>
+    {{song.title}}
+    {{song.likes_count}}
   </li>
 </ul>
-
-{{searchTerm}}
+{{slctaController.searchTerm}}
+</div>
