@@ -26,7 +26,7 @@ app.controller('SongsCtrl', ["$resource", function($resource){
   self.songs = []
 
   self.doSearch = function(){
-    return SC.get('http://api.soundcloud.com/tracks', { title: self.searchTerm, tag_list: self.searchTerm }, function(tracks) {
+    return SC.get('http://api.soundcloud.com/tracks', { q: self.searchTerm }, function(tracks) {
       self.songs = tracks
     console.log(self.songs)
     });
