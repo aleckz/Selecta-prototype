@@ -17,7 +17,6 @@ var app = angular.module('Selecta', ["ngResource"])
 
 app.controller('SongsCtrl', ["$resource", function($resource){
   var self = this;
-  var searchResource = $resource("https://api.soundcloud.com/tracks")
 
   SC.initialize({
     client_id: '42998e70408d9b7fb7ca4e717ba94600'
@@ -27,9 +26,10 @@ app.controller('SongsCtrl', ["$resource", function($resource){
 
   self.doSearch = function(){
     return SC.get('http://api.soundcloud.com/tracks', { q: self.searchTerm }, function(tracks) {
-      self.songs = tracks
-    console.log(self.songs)
+      self.songs = tracks;
+      console.log(self.songs)
     });
+    self.$digest
   };
 
 }]);
