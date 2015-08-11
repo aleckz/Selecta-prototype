@@ -13,3 +13,22 @@
 //= require angular
 //= require angular-resource
 //= require_tree .
+var app = angular.module('Selecta', ["ngResource"])
+
+app.controller('SongsCtrl', ["$resource", function($resource){
+  var self = this;
+  var searchResource = $resource("https://api.soundcloud.com/search/tracks")
+
+  SC.initialize({
+    client_id: '42998e70408d9b7fb7ca4e717ba94600'
+  });
+
+  self.doSearch = function(){
+    console.log(self.searchTerm)
+    SC.get('/tracks', { genres: self.searchTerm }, function(tracks) {
+      $(tracks).each(function(index, track) {
+        $('#results').append($('<li></li>').html(track.title + ' - ' + track.artwork_url));
+      });
+    });
+  };
+}]);

@@ -1,10 +1,15 @@
 <h1>Selecta</h1>
 
-<!-- <div ng-controller="SongsCtrl"> -->
+<div ng-controller="SongsCtrl as slctaController">
 <form>
-  <input type="text" ng-model="searchTerm.name">
-  <button>Search</button>
+  <input type="text" ng-model="slctaController.searchTerm">
+  <button ng-click="slctaController.doSearch()">Search</button>
 </form>
-<!-- </div> -->
+</div>
 
-{{searchTerm.name}}
+<ul>
+  <li id="results">
+  </li>
+</ul>
+
+{{searchTerm}}
