@@ -21,7 +21,6 @@ function($stateProvider, $urlRouterProvider) {
 
   $stateProvider
 
-
     .state('home', {
       url: '/home',
       templateUrl: '/home.html',
@@ -32,10 +31,16 @@ function($stateProvider, $urlRouterProvider) {
       url: '/track/:songId',
       templateUrl: '/track.html',
       controller: 'TrackCtrl'
+    })
+
+    .state('songs', {
+      url: '/songs',
+      templateUrl: '/songs/index.html.erb',
+      controller: 'SongListCtrl'
     });
 
 
-  $urlRouterProvider.otherwise('home');
+  // $urlRouterProvider.otherwise('home');
 }]);
 
 app.controller('SongsCtrl', ["$resource", "$scope", function($resource, $scope){
@@ -96,4 +101,25 @@ app.controller('TrackCtrl', ["$resource","$scope", "$stateParams", function($res
   };
 
 
+}]);
+
+app.controller("SongListCtrl", ['$resource', 'Songs', 'Song', '$location', function($resource, Songs, Song, $location) {
+  var self = this;
+  self.songs = Songs.query(); //it's getting user collection
+  console.log(self.songs);
+}]);
+
+app.factory('Songs', ['$resource',function($resource){
+  return $resource('/songs.json', {},{
+  query: { method: 'GET', isArray: true },
+  create: { method: 'POST' }
+  });
+}]);
+
+app.factory('Song', ['$resource', function($resource){
+  return $resource('/songs/:id.json', {}, {
+  show: { method: 'GET' },
+  update: { method: 'PUT', params: {id: '@id'} },
+  delete: { method: 'DELETE', params: {id: '@id'} }
+ });
 }]);

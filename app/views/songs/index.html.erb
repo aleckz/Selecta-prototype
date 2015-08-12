@@ -13,6 +13,12 @@
   </ul>
 </div>
 
+<div ng-controller="SongListCtrl as SLC">
+    <ul ng-repeat="song in SLC.songs">
+      <li>{{song.soundcloud_id}}</li>
+    </ul>
+</div>
+
 
   <div>
     <ui-view></ui-view>
