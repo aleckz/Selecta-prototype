@@ -38,6 +38,5 @@ User.find(3).songs << Song.find(4)
 User.find(3).songs << Song.find(10)
 
 User.find(4).songs << Song.find(8)
-User.find(4).songs << Song.find(11)
-User.find(4).songs << Song.find(13)
+
 
