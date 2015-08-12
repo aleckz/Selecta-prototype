@@ -4,10 +4,43 @@
   <title>SelectaPrototype</title>
   <script src="http://connect.soundcloud.com/sdk.js"></script>
   <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
+
+<script type='text/ng-template' id='/home.html'>
+  <div class="page-header">
+    <h1>Selecta Prototype</h1>
+  </div>
+</script>
+
+<script type="text/ng-template" id="/track.html">
+  <div ng-controller="TrackCtrl as TC">
+
+    <div class="page-header" style>
+      <h1 style="color:blue">{{TC.selected_song.title}}</h1>
+      <img src="{{TC.selected_song.artwork_url}}"/>
+      <button ng-click="TC.play()">Play</button>
+      <button ng-click="TC.stop()">Pause</button>
+    </div>
+
+  </div
+</script>
+
+<script type="text/ng-template" id="/songs.html">
+<div ng-controller="SongListCtrl as SLC">
+  <table>
+    <tr ng-show="songs.length" ng-repeat="song in songs">
+      <td>{{song.soundcloud_id}}</td>
+    </tr>
+  </table>
+</div>
+</script>
+
+
+
 <body>
 <% if user_signed_in? %>
   <%= link_to "Sign out", destroy_user_session_path, method: :delete %>
