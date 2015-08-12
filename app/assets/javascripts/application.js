@@ -48,11 +48,13 @@ app.controller('SongsCtrl', ["$resource", function($resource){
   self.songs = [];
 
   self.doSearch = function(){
-    return SC.get('http://api.soundcloud.com/tracks', { q: self.searchTerm }, function(tracks) {
+    if (self.searchTerm !== '') {
+      return SC.get('http://api.soundcloud.com/tracks', { q: self.searchTerm }, function(tracks) {
       self.songs = tracks;
       console.log(self.songs);
     });
-  };
+  }
+};
 }]);
 
 
