@@ -1,15 +1,20 @@
-<h1>Selecta</h1>
+<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.10/angular-ui-router.js"></script>
 
 <div ng-controller="SongsCtrl as slctaController">
-<form>
-  <input type="text" ng-model="slctaController.searchTerm" ng-change="slctaController.doSearch()" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0} }">
-  <button ng-click="slctaController.doSearch()">Search</button>
-</form>
-<ul ng-repeat="song in slctaController.songs">
-  <li>
-    {{song.title}}
-    {{song.user_id}}
-  </li>
-</ul>
-{{slctaController.searchTerm}}
+  <form>
+    <input type="text" ng-model="slctaController.searchTerm" ng-change="slctaController.doSearch()" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0} }">
+    <button ng-click="slctaController.doSearch()">Search</button>
+  </form>
+  <ul ng-repeat="song in slctaController.songs">
+    <li>
+      {{song.title}}
+      {{song.artwork_id}}
+      <a ng-href="#/track/{{song.id}}">Play</a>
+    </li>
+  </ul>
 </div>
+
+
+  <div>
+    <ui-view></ui-view>
+  </div>

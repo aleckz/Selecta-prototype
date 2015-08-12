@@ -13,7 +13,30 @@
 //= require angular
 //= require angular-resource
 //= require_tree .
-var app = angular.module('Selecta', ["ngResource"])
+var app = angular.module('Selecta', ["ngResource","ui.router"])
+.config([
+'$stateProvider',
+'$urlRouterProvider',
+function($stateProvider, $urlRouterProvider) {
+
+  $stateProvider
+
+
+    .state('home', {
+      url: '/home',
+      templateUrl: '/home.html',
+      controller: 'SongsCtrl'
+    })
+
+    .state('track', {
+      url: '/track/:songId',
+      templateUrl: '/track.html',
+      controller: 'TrackCtrl'
+    });
+
+
+  $urlRouterProvider.otherwise('home');
+}]);
 
 app.controller('SongsCtrl', ["$resource", function($resource){
   var self = this;
@@ -22,14 +45,21 @@ app.controller('SongsCtrl', ["$resource", function($resource){
     client_id: '42998e70408d9b7fb7ca4e717ba94600'
   });
 
-  self.songs = []
+  self.songs = [];
 
   self.doSearch = function(){
     return SC.get('http://api.soundcloud.com/tracks', { q: self.searchTerm }, function(tracks) {
       self.songs = tracks;
-      console.log(self.songs)
+      console.log(self.songs);
     });
-    self.$digest
   };
+}]);
+
+
+app.controller('TrackCtrl', ["$resource", "$stateParams", function($resource, $stateParams){
+  var self = this;
+
+  self.songId = $stateParams.songId;
+
 
 }]);
