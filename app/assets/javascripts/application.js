@@ -10,7 +10,27 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require jquery
-//= require jquery_ujs
-//= require turbolinks
+//= require angular
+//= require angular-resource
 //= require_tree .
+var app = angular.module('Selecta', ["ngResource"])
+
+app.controller('SongsCtrl', ["$resource", function($resource){
+  var self = this;
+
+  SC.initialize({
+    client_id: '42998e70408d9b7fb7ca4e717ba94600'
+  });
+
+  self.songs = []
+
+  self.doSearch = function(){
+    if (self.searchTerm !== '') {
+      return SC.get('http://api.soundcloud.com/tracks', { q: self.searchTerm }, function(tracks) {
+      self.songs = tracks;
+      console.log(self.songs)
+      });
+    };
+  };
+
+}]);

@@ -1,1 +1,15 @@
-Hello World!
+<h1>Selecta</h1>
+
+<div ng-controller="SongsCtrl as slctaController">
+<form>
+  <input type="text" ng-model="slctaController.searchTerm" ng-change="slctaController.doSearch()" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0} }">
+  <button ng-click="slctaController.doSearch()">Search</button>
+</form>
+<ul ng-repeat="song in slctaController.songs">
+  <li>
+    {{song.title}}
+    {{song.user_id}}
+  </li>
+</ul>
+{{slctaController.searchTerm}}
+</div>
