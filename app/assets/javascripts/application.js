@@ -63,8 +63,14 @@ app.controller('TrackCtrl', ["$resource", "$stateParams", function($resource, $s
   var song = undefined;
   var playing = false;
   self.songId = $stateParams.songId;
+
   SC.initialize({
     client_id: '42998e70408d9b7fb7ca4e717ba94600'
+  });
+
+  SC.get("/tracks/" + self.songId, function(tracks){
+    self.selected_song = tracks;
+    console.log(self.selected_song);
   });
 
   self.play = function(){

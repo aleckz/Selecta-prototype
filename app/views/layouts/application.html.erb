@@ -20,8 +20,8 @@
   <div ng-controller="TrackCtrl as TC">
 
     <div class="page-header" style>
-      <h1 style="color:blue">Single Track</h1>
-      {{TC.songId}}
+      <h1 style="color:blue">{{TC.selected_song.title}}</h1>
+      <img src="{{TC.selected_song.artwork_url}}"/>
       <button ng-click="TC.play()">Play</button>
       <button ng-click="TC.stop()">Pause</button>
     </div>
