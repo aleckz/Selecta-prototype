@@ -58,8 +58,15 @@ app.controller('SongsCtrl', ["$resource", function($resource){
 
 app.controller('TrackCtrl', ["$resource", "$stateParams", function($resource, $stateParams){
   var self = this;
-
   self.songId = $stateParams.songId;
 
+  SC.initialize({
+    client_id: '42998e70408d9b7fb7ca4e717ba94600'
+  });
 
+  self.play = function(){
+    SC.stream("/tracks/" + self.songId, function(sound){
+      sound.play();
+    });
+  };
 }]);

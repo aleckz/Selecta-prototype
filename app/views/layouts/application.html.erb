@@ -4,7 +4,6 @@
   <title>SelectaPrototype</title>
   <script src="http://connect.soundcloud.com/sdk.js"></script>
   <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-  <script src
 
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
@@ -23,6 +22,7 @@
     <div class="page-header" style>
       <h1 style="color:blue">Single Track</h1>
       {{TC.songId}}
+      <button ng-click="TC.play()">Play</button>
     </div>
 
   </div
