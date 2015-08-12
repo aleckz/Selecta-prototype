@@ -38,7 +38,7 @@ function($stateProvider, $urlRouterProvider) {
   $urlRouterProvider.otherwise('home');
 }]);
 
-app.controller('SongsCtrl', ["$resource", function($resource){
+app.controller('SongsCtrl', ["$resource", "$scope", function($resource, $scope){
   var self = this;
 
   SC.initialize({
@@ -50,15 +50,15 @@ app.controller('SongsCtrl', ["$resource", function($resource){
   self.doSearch = function(){
     if (self.searchTerm !== '') {
       return SC.get('http://api.soundcloud.com/tracks', { q: self.searchTerm }, function(tracks) {
-      self.songs = tracks;
-      console.log(self.songs);
+        self.songs = tracks;
+        $scope.$apply();
     });
   }
 };
 }]);
 
 
-app.controller('TrackCtrl', ["$resource", "$stateParams", function($resource, $stateParams){
+app.controller('TrackCtrl', ["$resource","$scope", "$stateParams", function($resource, $scope, $stateParams){
   var self = this;
   var song = undefined;
   var playing = false;
@@ -71,6 +71,7 @@ app.controller('TrackCtrl', ["$resource", "$stateParams", function($resource, $s
   SC.get("/tracks/" + self.songId, function(tracks){
     self.selected_song = tracks;
     console.log(self.selected_song);
+    $scope.$apply();
   });
 
   self.play = function(){
