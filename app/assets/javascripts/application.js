@@ -60,15 +60,33 @@ app.controller('SongsCtrl', ["$resource", function($resource){
 
 app.controller('TrackCtrl', ["$resource", "$stateParams", function($resource, $stateParams){
   var self = this;
+  var song = undefined;
+  var playing = false;
   self.songId = $stateParams.songId;
-
   SC.initialize({
     client_id: '42998e70408d9b7fb7ca4e717ba94600'
   });
 
   self.play = function(){
-    SC.stream("/tracks/" + self.songId, function(sound){
-      sound.play();
-    });
+    if (!song && !playing) {
+      SC.stream("/tracks/" + self.songId, function(sound){
+        song = sound
+        sound.start();
+        is_playing = true;
+      });
+    } else {
+      console.log(playing);
+      if (!playing) {
+        song.play();
+        playing = true;
+      }
+    }
   };
+
+  self.stop = function(){
+    song.pause();
+    playing = false;
+  };
+
+
 }]);
