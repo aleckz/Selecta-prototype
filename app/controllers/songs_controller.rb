@@ -5,11 +5,18 @@ class SongsController < ApplicationController
   respond_to :html, :json
 
   def index
+
     @song = Song.all
-    respond_with(@songs) do |format|
-      format.json { render :json => @song.as_json }
+    @song << current_user
+    respond_with(@blah) do |format|
+      format.json { render :json => (@song).as_json }
       format.html
     end
-  end
 
+    # @user = current_user
+    # respond_with(@users) do |format|
+    #   format.json { render :json => @user.json }
+    # end
+
+  end
 end
