@@ -1,7 +1,13 @@
 Rails.application.routes.draw do
   devise_for :users
 
-  resources :songs
+  resources :songs do
+    collection do
+      post :find
+    end
+  end
+
+
 
   root to: "songs#index"
 

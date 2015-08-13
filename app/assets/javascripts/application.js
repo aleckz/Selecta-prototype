@@ -79,9 +79,13 @@ app.controller('TrackCtrl', ["$resource", "$location", "$scope", 'Song', 'SongsU
 
   SC.get("/tracks/" + self.songId, function(tracks){
     self.selected_song = tracks;
-    console.log(self.selected_song);
     $scope.$apply();
   });
+
+  self.newsongid = function(){
+    console.log(self.selected_song.id);
+    Song.show({soundcloud_id: self.selected_song.id});
+  };
 
   self.play = function(){
   if (song) {
@@ -115,9 +119,17 @@ app.controller('TrackCtrl', ["$resource", "$location", "$scope", 'Song', 'SongsU
   };
 
   self.like = function(){
-    console.log(self.songId);
     SongsUser.create({soundcloud_id: self.songId});
+
   };
+
+  self.next = function() {
+    SC.get("/tracks/63848640", function(tracks){
+      self.newsong = tracks;
+      $scope.$apply();
+    });
+  };
+
 }]);
 
 
@@ -129,8 +141,9 @@ app.factory('SongsUser', ['$resource',function($resource){
 }]);
 
 app.factory('Song', ['$resource', function($resource){
-  return $resource('/songs/:id.json', {}, {
-  show: { method: 'GET' },
+  return $resource('/songs/find.json', {}, {
+  show: { method: 'GET', isArray: true },
+  find: { method: 'POST'},
   update: { method: 'PUT', params: {id: '@id'} },
   delete: { method: 'DELETE', params: {id: '@id'} }
  });

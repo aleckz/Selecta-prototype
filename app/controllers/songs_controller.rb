@@ -15,6 +15,14 @@ class SongsController < ApplicationController
     end
   end
 
+  def show
+    @song = Song.where(soundcloud_id: song_params)
+    respond_with do |format|
+      format.json { render :json => {soundcloud_id: '123'} }
+    end
+    byebug
+  end
+
 
   def create
     @usersong = current_user.songs.create(soundcloud_id: song_params)
@@ -22,6 +30,13 @@ class SongsController < ApplicationController
       render json: { :success => true }
     end
   end
+
+  def find
+    @oldsong = Song.find_by(soundcloud_id: song_params)
+
+  end
+
+
 
 
 private
