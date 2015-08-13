@@ -60,6 +60,10 @@ app.controller('SongsCtrl', ["$resource", "$scope", function($resource, $scope){
     });
   }
 };
+
+  self.clearList = function(){
+    self.songs = '';
+  }
 }]);
 
 song = false;
