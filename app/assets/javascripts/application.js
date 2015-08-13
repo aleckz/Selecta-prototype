@@ -36,11 +36,10 @@ function($stateProvider, $urlRouterProvider) {
     .state('songs', {
       url: '/songs',
       templateUrl: '/songs/index.html.erb',
-      controller: 'SongListCtrl'
+      controller: 'TrackCtrl'
     });
 
-
-  // $urlRouterProvider.otherwise('home');
+  $urlRouterProvider.otherwise('home');
 }]);
 
 app.controller('SongsCtrl', ["$resource", "$scope", function($resource, $scope){
@@ -63,11 +62,13 @@ app.controller('SongsCtrl', ["$resource", "$scope", function($resource, $scope){
 
   self.clearList = function(){
     self.songs = '';
-  }
+  };
 }]);
 
+
 song = false;
-app.controller('TrackCtrl', ["$resource","$scope", "$stateParams", function($resource, $scope, $stateParams){
+
+app.controller('TrackCtrl', ["$resource", "$location", "$scope", 'Song', 'SongsUser', "$stateParams", function($resource, $location, $scope, Song, SongsUser, $stateParams){
   var self = this;
   var playing = false;
   self.songId = $stateParams.songId;
@@ -105,20 +106,6 @@ app.controller('TrackCtrl', ["$resource","$scope", "$stateParams", function($res
         playing = true;
       }
     }
-  //  song = sound
-  //  if (temp) {
-  //    if (song.url != temp.url) {
-  //      temp.stop();
-  //      song.start();
-  //      playing = true;
-  //      console.log(temp.url);
-  //    }
-  //  } else {
-  //    if (!playing) {
-  //      song.play();
-  //      playing = true;
-  //    }
-  //  }
   });
   };
 
@@ -127,16 +114,14 @@ app.controller('TrackCtrl', ["$resource","$scope", "$stateParams", function($res
     playing = false;
   };
 
-
+  self.like = function(){
+    console.log(self.songId);
+    SongsUser.create({soundcloud_id: self.songId});
+  };
 }]);
 
-app.controller("SongListCtrl", ['$resource', 'Songs', 'Song', '$location', function($resource, Songs, Song, $location) {
-  var self = this;
-  self.songs = Songs.query(); //it's getting user collection
-  console.log(self.songs);
-}]);
 
-app.factory('Songs', ['$resource',function($resource){
+app.factory('SongsUser', ['$resource',function($resource){
   return $resource('/songs.json', {},{
   query: { method: 'GET', isArray: true },
   create: { method: 'POST' }
