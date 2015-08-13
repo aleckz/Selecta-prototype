@@ -68,7 +68,7 @@ app.controller('SongsCtrl', ["$resource", "$scope", function($resource, $scope){
 
 song = false;
 
-app.controller('TrackCtrl', ["$resource", "$location", "$scope", 'Song', 'SongsUser', "$stateParams", function($resource, $location, $scope, Song, SongsUser, $stateParams){
+app.controller('TrackCtrl', ["$resource", "$location", "$scope","$window", 'Song', 'SongsUser', "$stateParams", function($resource, $location, $scope, $window, Song, SongsUser, $stateParams){
   var self = this;
   var playing = false;
   self.songId = $stateParams.songId;
@@ -79,9 +79,12 @@ app.controller('TrackCtrl', ["$resource", "$location", "$scope", 'Song', 'SongsU
 
   SC.get("/tracks/" + self.songId, function(tracks){
     self.selected_song = tracks;
-    console.log(self.selected_song);
     $scope.$apply();
   });
+
+  self.next = function() {
+    $window.location.href = '/#/track/84394300'
+  };
 
   self.play = function(){
   if (song) {
