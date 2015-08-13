@@ -83,14 +83,14 @@ app.controller('TrackCtrl', ["$resource", "$location", "$scope","$window", 'Song
   });
 
   self.next = function() {
-    $window.location.href = '/#/track/84394300'
+    $state.go('track', {songId: 43891342});
   };
 
   self.play = function(){
   if (song) {
     var temp = song;
   }
-  SC.stream("/tracks/" + self.songId, function(sound){
+  SC.stream("/tracks/" + self.songId,{onfinish: function(){ self.next();}}, function(sound) {
     song = sound;
     if (temp) {
       if (song.url != temp.url) {
