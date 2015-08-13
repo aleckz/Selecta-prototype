@@ -60,12 +60,15 @@ app.controller('SongsCtrl', ["$resource", "$scope", function($resource, $scope){
     });
   }
 };
+
+  self.clearList = function(){
+    self.songs = '';
+  }
 }]);
 
-
+song = false;
 app.controller('TrackCtrl', ["$resource","$scope", "$stateParams", function($resource, $scope, $stateParams){
   var self = this;
-  var song = undefined;
   var playing = false;
   self.songId = $stateParams.songId;
 
@@ -80,19 +83,43 @@ app.controller('TrackCtrl', ["$resource","$scope", "$stateParams", function($res
   });
 
   self.play = function(){
-    if (!song && !playing) {
-      SC.stream("/tracks/" + self.songId, function(sound){
-        song = sound
-        sound.start();
-        is_playing = true;
-      });
+  if (song) {
+    var temp = song;
+  }
+  SC.stream("/tracks/" + self.songId, function(sound){
+    song = sound;
+    if (temp) {
+      if (song.url != temp.url) {
+        temp.stop();
+        song.start();
+        playing = true;
+      } else {
+        song = temp;
+        if (!playing) {
+          song.play();
+        }
+      }
     } else {
-      console.log(playing);
       if (!playing) {
         song.play();
         playing = true;
       }
     }
+  //  song = sound
+  //  if (temp) {
+  //    if (song.url != temp.url) {
+  //      temp.stop();
+  //      song.start();
+  //      playing = true;
+  //      console.log(temp.url);
+  //    }
+  //  } else {
+  //    if (!playing) {
+  //      song.play();
+  //      playing = true;
+  //    }
+  //  }
+  });
   };
 
   self.stop = function(){

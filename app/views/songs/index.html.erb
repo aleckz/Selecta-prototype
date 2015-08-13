@@ -19,7 +19,7 @@
   </form>
   <ul ng-repeat="song in slctaController.songs">
     <li>
-      <a ng-href="#/track/{{song.id}}">{{song.title}}</a>
+      <a ng-href="#/track/{{song.id}}" ng-click="slctaController.clearList()">{{song.title}}</a>
       {{song.artwork_id}}
     </li>
   </ul>
