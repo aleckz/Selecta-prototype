@@ -36,13 +36,7 @@ function($stateProvider, $urlRouterProvider) {
     .state('songs', {
       url: '/songs',
       templateUrl: '/songs/index.html.erb',
-      controller: 'SongListCtrl'
-    })
-
-    .state('NewSongs', {
-      url: '/songs/new',
-      templateUrl: '/songs/index.html.erb',
-      controller: 'SongListCtrl'
+      controller: 'TrackCtrl'
     });
 
   $urlRouterProvider.otherwise('home');
@@ -68,7 +62,7 @@ app.controller('SongsCtrl', ["$resource", "$scope", function($resource, $scope){
 }]);
 
 
-app.controller('TrackCtrl', ["$resource","$scope", 'Song', 'Songs', 'User', 'Users', "$stateParams", function($resource, $scope, Song, Songs, User, Users, $stateParams){
+app.controller('TrackCtrl', ["$resource", "$location", "$scope", 'Song', 'SongsUser', "$stateParams", function($resource, $location, $scope, Song, SongsUser, $stateParams){
   var self = this;
   var song = undefined;
   var playing = false;
@@ -106,22 +100,13 @@ app.controller('TrackCtrl', ["$resource","$scope", 'Song', 'Songs', 'User', 'Use
   };
 
   self.like = function(){
-    self.user = Songs.query();
-    console.log(self.user);
-    // self.user.songs.create({soundcloud_id: self.songId});
+    console.log(self.songId);
+    SongsUser.create({soundcloud_id: self.songId});
   };
-
 }]);
 
 
-
-app.controller("SongListCtrl", ['$resource', 'Songs', 'Song', '$location', function($resource, Songs, Song, $location) {
-  var self = this;
-  self.songs = Songs.query(); //it's getting user collection
-  console.log(self.songs);
-}]);
-
-app.factory('Songs', ['$resource',function($resource){
+app.factory('SongsUser', ['$resource',function($resource){
   return $resource('/songs.json', {},{
   query: { method: 'GET', isArray: true },
   create: { method: 'POST' }
@@ -130,21 +115,6 @@ app.factory('Songs', ['$resource',function($resource){
 
 app.factory('Song', ['$resource', function($resource){
   return $resource('/songs/:id.json', {}, {
-  show: { method: 'GET' },
-  update: { method: 'PUT', params: {id: '@id'} },
-  delete: { method: 'DELETE', params: {id: '@id'} }
- });
-}]);
-
-app.factory('Users', ['$resource',function($resource){
-  return $resource('/users.json', {},{
-  query: { method: 'GET', isArray: true },
-  create: { method: 'POST' }
-  });
-}]);
-
-app.factory('User', ['$resource', function($resource){
-  return $resource('/users/:id.json', {}, {
   show: { method: 'GET' },
   update: { method: 'PUT', params: {id: '@id'} },
   delete: { method: 'DELETE', params: {id: '@id'} }
