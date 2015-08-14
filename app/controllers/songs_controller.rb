@@ -7,22 +7,19 @@ class SongsController < ApplicationController
   skip_before_filter  :verify_authenticity_token
 
   def index
-    @song = Song.all
-    @user = current_user
-    respond_with do |format|
-      format.json { render :json => {song: @song, current_user: @user} }
-      format.html
-    end
+    # respond_with do |format|
+    #   format.json { render :json => {soundcloud_id: '123'} }
+    #   format.html
+    # end
   end
 
   def show
-    @song = Song.where(soundcloud_id: song_params)
-    respond_with do |format|
-      format.json { render :json => {soundcloud_id: '123'} }
+    @newsong = 'hello'
+    respond_to do |format|
+      format.json { render :json => {soundcloud_id: @newsong}}
+      format.html
     end
-    byebug
   end
-
 
   def create
     @usersong = current_user.songs.create(soundcloud_id: song_params)
@@ -33,8 +30,10 @@ class SongsController < ApplicationController
 
   def find
     @oldsong = Song.find_by(soundcloud_id: song_params)
-
+    render :json => { song: @oldsong.as_json }
   end
+
+
 
 
 

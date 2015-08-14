@@ -68,7 +68,7 @@ app.controller('SongsCtrl', ["$resource", "$scope", function($resource, $scope){
 
 song = false;
 
-app.controller('TrackCtrl', ["$resource", "$location", "$scope", 'Song', 'SongsUser', "$stateParams", function($resource, $location, $scope, Song, SongsUser, $stateParams){
+app.controller('TrackCtrl', ["$resource", "$location", "$scope", 'Song', 'FindSong', 'SongsUser', "$stateParams", function($resource, $location, $scope, Song, FindSong, SongsUser, $stateParams){
   var self = this;
   var playing = false;
   self.songId = $stateParams.songId;
@@ -84,8 +84,15 @@ app.controller('TrackCtrl', ["$resource", "$location", "$scope", 'Song', 'SongsU
 
   self.newsongid = function(){
     console.log(self.selected_song.id);
-    Song.show({soundcloud_id: self.selected_song.id});
+    test = FindSong.find({soundcloud_id: self.selected_song.id});
+    // console.log(Song.show());
+    console.log(test);
   };
+    //
+    // var div = angular.element("#div-item-data");
+    // console.log(div);
+    // $scope.item = div.name;
+    // console.log(div.name);
 
   self.play = function(){
   if (song) {
@@ -141,10 +148,16 @@ app.factory('SongsUser', ['$resource',function($resource){
 }]);
 
 app.factory('Song', ['$resource', function($resource){
-  return $resource('/songs/find.json', {}, {
-  show: { method: 'GET', isArray: true },
-  find: { method: 'POST'},
+  return $resource('/songs/:id.json', {}, {
+  show: { method: 'GET'},
+  find: { method: 'POST', params: {id: '@id'} },
   update: { method: 'PUT', params: {id: '@id'} },
   delete: { method: 'DELETE', params: {id: '@id'} }
+ });
+}]);
+
+app.factory('FindSong', ['$resource', function($resource){
+  return $resource('/songs/find.json', {}, {
+  find: { method: 'POST' },
  });
 }]);

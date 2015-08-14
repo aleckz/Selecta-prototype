@@ -17,21 +17,23 @@
 </script>
 
 <script type="text/ng-template" id="/track.html">
-  <div ng-controller="TrackCtrl as TC">
+  <div ng-controller="TrackCtrl as TC" ng-init="init('<@oldsong'
+  )">
 
-    <div class="page-header" style>
+
+
+    <div class="page-header">
       <h1 style="color:blue">{{TC.selected_song.title}}</h1>
       <img src="{{TC.selected_song.artwork_url}}"/>
       <button ng-click="TC.play()">Play</button>
       <button ng-click="TC.stop()">Pause</button>
       <button ng-click="TC.like()">Like</button>
       <button ng-click="TC.newsongid()">Next</button>
+      // <div id="div-item-data" test='test' name="<%= @oldsong %>"></div>
+      // <h1> {{item}} </h1>
+
 
       <a ng-href="#/track/{{TC.newsongid}}">Next</a>
-    </div>
-
-
-
   </div
 </script>
 
