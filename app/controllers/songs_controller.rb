@@ -30,7 +30,8 @@ class SongsController < ApplicationController
 
   def find
     @oldsong = Song.find_by(soundcloud_id: song_params)
-    render :json => { song: @oldsong.as_json }
+    @newsong = '12345678'
+    render :json => { song: @newsong.as_json }
   end
 
 

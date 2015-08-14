@@ -85,8 +85,10 @@ app.controller('TrackCtrl', ["$resource", "$location", "$scope", 'Song', 'FindSo
   self.newsongid = function(){
     console.log(self.selected_song.id);
     test = FindSong.find({soundcloud_id: self.selected_song.id});
-    // console.log(Song.show());
-    console.log(test);
+      console.log(test);
+    test.$promise.then(function(song){
+      console.log(song.song);
+    });
   };
     //
     // var div = angular.element("#div-item-data");
