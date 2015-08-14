@@ -95,10 +95,8 @@ app.controller('TrackCtrl', ["$resource", "$location", "$scope","$window", 'Song
   if (song) {
     var temp = song;
   }
-    // console.log($stateParams.songId)
     SC.stream("/tracks/" + self.songId,{onfinish: function(){ self.next();}}, function(sound){
       song = sound;
-      // console.log(self.songId);
       if (temp) {
         if (song.url != temp.url) {
           temp.stop();
