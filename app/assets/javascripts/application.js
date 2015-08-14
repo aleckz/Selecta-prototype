@@ -68,9 +68,10 @@ app.controller('SongsCtrl', ["$resource", "$scope", function($resource, $scope){
 
 song = false;
 
-app.controller('TrackCtrl', ["$resource", "$location", "$scope", 'Song', 'SongsUser', "$stateParams", function($resource, $location, $scope, Song, SongsUser, $stateParams){
+app.controller('TrackCtrl', ["$resource", "$location", "$scope","$window", 'Song', 'SongsUser', "$stateParams","$timeout", "$state", "$rootScope",function($resource, $location, $scope, $window, Song, SongsUser, $stateParams, $timeout, $state, $rootScope){
   var self = this;
   var playing = false;
+
   self.songId = $stateParams.songId;
 
   SC.initialize({
@@ -79,34 +80,41 @@ app.controller('TrackCtrl', ["$resource", "$location", "$scope", 'Song', 'SongsU
 
   SC.get("/tracks/" + self.songId, function(tracks){
     self.selected_song = tracks;
-    console.log(self.selected_song);
     $scope.$apply();
   });
+
+  self.next = function() {
+    $state.go('track', {songId: 43891342})
+    $rootScope.$on('$stateChangeSuccess',function(event, toState, toParams, fromState, fromParams){
+      self.songId = toParams.songId;
+      self.play();
+    });
+  };
 
   self.play = function(){
   if (song) {
     var temp = song;
   }
-  SC.stream("/tracks/" + self.songId, function(sound){
-    song = sound;
-    if (temp) {
-      if (song.url != temp.url) {
-        temp.stop();
-        song.start();
-        playing = true;
+    SC.stream("/tracks/" + self.songId,{onfinish: function(){ self.next();}}, function(sound){
+      song = sound;
+      if (temp) {
+        if (song.url != temp.url) {
+          temp.stop();
+          song.start();
+          playing = true;
+        } else {
+          song = temp;
+          if (!playing) {
+            song.play();
+          }
+        }
       } else {
-        song = temp;
         if (!playing) {
           song.play();
+          playing = true;
         }
       }
-    } else {
-      if (!playing) {
-        song.play();
-        playing = true;
-      }
-    }
-  });
+    });
   };
 
   self.stop = function(){
@@ -115,7 +123,7 @@ app.controller('TrackCtrl', ["$resource", "$location", "$scope", 'Song', 'SongsU
   };
 
   self.like = function(){
-    console.log(self.songId);
+    // console.log(self.songId);
     SongsUser.create({soundcloud_id: self.songId});
   };
 }]);
