@@ -68,7 +68,7 @@ app.controller('SongsCtrl', ["$resource", "$scope", function($resource, $scope){
 
 song = false;
 
-app.controller('TrackCtrl', ["$resource", "$location", "$scope","$window", 'Song', 'SongsUser', "$stateParams","$timeout", "$state", "$rootScope",function($resource, $location, $scope, $window, Song, SongsUser, $stateParams, $timeout, $state, $rootScope){
+app.controller('TrackCtrl', ["$resource", "$location", "$scope", "$window", 'Song', 'FindSong', 'SongsUser', "$stateParams","$timeout", "$state", "$rootScope",function($resource, $location, $scope, $window, Song, FindSong, SongsUser, $stateParams, $timeout, $state, $rootScope){
   var self = this;
   var playing = false;
 
@@ -83,8 +83,13 @@ app.controller('TrackCtrl', ["$resource", "$location", "$scope","$window", 'Song
     $scope.$apply();
   });
 
-  self.next = function() {
-    $state.go('track', {songId: 43891342})
+  self.test = function() {
+    test = FindSong.find({soundcloud_id: self.selected_song.id});
+    console.log(test);
+    test.$promise.then(function(song){
+      console.log(song.song);
+    });
+    $state.go('track', {songId: 43891342});
     $rootScope.$on('$stateChangeSuccess',function(event, toState, toParams, fromState, fromParams){
       self.songId = toParams.songId;
       self.play();
@@ -123,9 +128,17 @@ app.controller('TrackCtrl', ["$resource", "$location", "$scope","$window", 'Song
   };
 
   self.like = function(){
-    // console.log(self.songId);
     SongsUser.create({soundcloud_id: self.songId});
+
   };
+
+  self.next = function() {
+    SC.get("/tracks/63848640", function(tracks){
+      self.newsong = tracks;
+      $scope.$apply();
+    });
+  };
+
 }]);
 
 
@@ -138,8 +151,15 @@ app.factory('SongsUser', ['$resource',function($resource){
 
 app.factory('Song', ['$resource', function($resource){
   return $resource('/songs/:id.json', {}, {
-  show: { method: 'GET' },
+  show: { method: 'GET'},
+  find: { method: 'POST', params: {id: '@id'} },
   update: { method: 'PUT', params: {id: '@id'} },
   delete: { method: 'DELETE', params: {id: '@id'} }
+ });
+}]);
+
+app.factory('FindSong', ['$resource', function($resource){
+  return $resource('/songs/find.json', {}, {
+  find: { method: 'POST' },
  });
 }]);
